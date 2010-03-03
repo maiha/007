@@ -1,0 +1,19 @@
+007
+===
+
+A sample application for james-bond
+
+
+Usage
+=====
+
+  % thor monk:start --port=3000
+
+  % thor monk:console
+
+
+
+Author
+======
+
+  maiha@wota.jp
