@@ -1,0 +1,3 @@
+sinatra >= 1.0
+mongo_mapper >= 0.7.2
+james-bond git://github.com/maiha/james-bond.git

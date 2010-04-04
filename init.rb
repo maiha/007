@@ -1,16 +1,37 @@
 $KCODE = 'u'
 
-require "rubygems"
-
-begin
-  require "vendor/dependencies/lib/dependencies"
-rescue LoadError
-  require "dependencies"
+def say(name, verbose = nil, &block)
+  verbose ||= ENV['RACK_ENV'] == 'development'
+  print "%s ... " % name if verbose
+  block.call
+  puts "done" if verbose
 end
 
-#ROOT_DIR = File.expand_path(File.dirname(__FILE__)) unless defined? ROOT_DIR
+say("require 'rubygems'") {
+  require "rubygems"
+}
 
-require '/git/plugins/james-bond/lib/james-bond'
+say("require 'dependencies'") {
+  begin
+    require "vendor/dependencies/lib/dependencies"
+  rescue LoadError
+    require "dependencies"
+  end
+}
+
+say("require 'mongo_mapper'") {
+  require 'mongo_mapper'
+#  MongoMapper.database = "YOUR_DB_NAME"
+}
+
+say("require 'sinatra'") {
+  require "sinatra/base"
+  require 'haml'
+}
+
+say("require 'james-bond'") {
+  require 'james-bond'
+}
 
 James.config do
   # Specify files to load, and give :reload for reloading in deveopment.
