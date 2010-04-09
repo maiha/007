@@ -59,6 +59,10 @@ class Monk < Thor
     end
 
     def initialize(*names)
+      # normalize
+      names = names.map{|i| i.sub(%r{-\d+(\.\d+)*$}, '')}
+      names.delete 'rubygems'
+      names.unshift 'rubygems'
       @libs = names.map{|name| Library.new(name)}
     end
 
