@@ -1,37 +1,27 @@
 $KCODE = 'u'
 
-def say(name, verbose = nil, &block)
-  verbose ||= ENV['RACK_ENV'] == 'development'
-  print "%s ... " % name if verbose
-  block.call
-  puts "done" if verbose
-end
+require File.join(File.dirname(__FILE__), 'gem_activate')
 
-say("require 'rubygems'") {
-  require "rubygems"
-}
-
-say("require 'dependencies'") {
+gems = GemActivate.new
+gems.add('dependencies') do
   begin
     require "vendor/dependencies/lib/dependencies"
   rescue LoadError
     require "dependencies"
   end
-}
-
-say("require 'mongo_mapper'") {
+end
+gems.add('mongo_mapper') do
   require 'mongo_mapper'
-#  MongoMapper.database = "YOUR_DB_NAME"
-}
-
-say("require 'sinatra'") {
+  MongoMapper.database = "memo"
+end
+gems.add('sinatra') do
   require "sinatra/base"
   require 'haml'
-}
+end
 
-say("require 'james-bond'") {
-  require 'james-bond'
-}
+gems.add('james-bond')
+gems.execute(:verbose=>!(ENV['RACK_ENV'] == 'production'))
+
 
 James.config do
   # Specify files to load, and give :reload for reloading in deveopment.
